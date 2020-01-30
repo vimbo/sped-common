@@ -17,6 +17,7 @@ namespace NFePHP\Common;
 
 use NFePHP\Common\Exception\ValidatorException;
 use DOMDocument;
+use NFePHP\Common\SanitizeErrors;
 
 class Validator
 {
@@ -42,7 +43,7 @@ class Validator
         if (! $dom->schemaValidate($xsd)) {
             $errors = [];
             foreach (libxml_get_errors() as $error) {
-                $errors[] = $error->message;
+                $errors[] = SanitizeErrors::handleMessage($error->message, $xml);
             }
             throw ValidatorException::xmlErrors($errors);
         }
