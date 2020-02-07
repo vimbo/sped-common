@@ -37,20 +37,22 @@ class SanitizeErrors
             if(count($treated) == 2){
                 $message = '';
                 self::findNodeByLine($domSearch->getElementsByTagName('infNFe')->item(0));
-                if(!empty($find['nItem'])){
-                    $message .= "Produto/Serviço {$find['nItem']}: ";
+                if(!empty(self::$find['nItem'])){
+                    $nItem = self::$find['nItem'];
+                    $message .= "Produto/Serviço {$nItem}: ";
                 }
 
-                if($find['node'] == 'emit'){
+                if(self::$find['node'] == 'emit'){
                     $message .= 'Emitente: ';
-                }else if($find['node'] == 'dest'){
+                }else if(self::$find['node'] == 'dest'){
                     $message .= 'Destinatário: ';
-                }else if($find['node'] == 'transp'){
+                }else if(self::$find['node'] == 'transp'){
                     $message .= 'Transportador: ';
                 }
 
-                if(!empty($find['item'])){
-                    $message .= "{$find['item']} - ";
+                if(!empty(self::$find['item'])){
+                    $item = self::$find['item'];
+                    $message .= "{$item} - ";
                 }
 
                 $tag = trim($treated[0]);
