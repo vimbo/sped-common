@@ -11,12 +11,14 @@ class SanitizeErrors
     protected static $find;
 
     /**
-     * @param string $message
+     * @param \LibXMLError $error
      * @param string $xml
-     * @return mixed|string
+     * @return string|string[]|null
      */
-    public static function handleMessage(string $message, string $xml)
+    public static function handleMessage(\LibXMLError $error, string $xml)
     {
+        $message = $error->message;
+        self::$line = $error->line;
         $domSearch = self::getFormatedXml($xml);
         self::$find = null;
         //$message = str_replace(['{http://www.portalfiscal.inf.br/nfe}'], '', $message);
