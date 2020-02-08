@@ -18,7 +18,9 @@ class SanitizeErrors
     public static function handleMessage(string $message, string $xml)
     {
         $domSearch = self::getFormatedXml($xml);
-        $message = str_replace(['{http://www.portalfiscal.inf.br/nfe}'], '', $message);
+        self::$find = null;
+        //$message = str_replace(['{http://www.portalfiscal.inf.br/nfe}'], '', $message);
+        $message = preg_replace('/\{(.*?)\}/s', '', $message);
 
         if(strpos($message, 'Expected is') !== false){
             $treated = str_replace([
@@ -26,6 +28,7 @@ class SanitizeErrors
                 "'",
                 "Missing child element(s)",
                 ". Expected is ",
+                "one of ",
                 "This element is not expected",
                 "(",
                 ")",
@@ -57,7 +60,7 @@ class SanitizeErrors
 
                 $tag = trim($treated[0]);
                 $tagLack = trim($treated[1]);
-                $message .= "Erro na tag <b>{$tag}</b>, está faltando a configuração do <b>{$tagLack}</b>";
+                $message .= "Erro na tag <b>{$tag}</b>, está faltando a configuração do <b>{$tagLack}</b><br>";
             }
         }
 

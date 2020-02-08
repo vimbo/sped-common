@@ -33,17 +33,29 @@ class Validator
         if (!self::isXML($xml)) {
             throw ValidatorException::isNotXml();
         }
+
+        //Format output to get actual line of error
+        $dom = new DOMDocument('1.0', 'utf-8');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xml, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+
+        //Convert to string to load again
+        $formatedXml = $dom->saveXml();
+
         libxml_use_internal_errors(true);
         libxml_clear_errors();
         $dom = new DOMDocument('1.0', 'utf-8');
         $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = false;
-        $dom->loadXML($xml, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+        $dom->formatOutput = true;
+        //Load formated $xml
+        $dom->loadXML($formatedXml, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+
         libxml_clear_errors();
         if (! $dom->schemaValidate($xsd)) {
             $errors = [];
             foreach (libxml_get_errors() as $error) {
-                $errors[] = SanitizeErrors::handleMessage($error->message, $xml);
+                $errors[] = SanitizeErrors::handleMessage($error, $formatedXml);
             }
             throw ValidatorException::xmlErrors($errors);
         }
