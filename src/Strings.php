@@ -79,8 +79,8 @@ class Strings
         //& isolated, less than, greater than, quotation marks and apostrophes
         //should be replaced by their html equivalent
         $input = str_replace(
-            ['& ','<','>','"',"'"],
-            ['&amp; ','&lt;','&gt;','&quot;','&#39;'],
+            ['&','<','>','"',"'"],
+            ['&amp;','&lt;','&gt;','&quot;','&#39;'],
             $input
         );
         $input = self::normalize($input);
