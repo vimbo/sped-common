@@ -21,11 +21,11 @@ class SoapException extends \RuntimeException implements ExceptionInterface
             . "verifique se a libcurl está instalada. $message");
     }
 
-    public static function soapFault($message)
+    public static function soapFault($message, $code)
     {
-        /*return new static("An error occurred while trying to communication "
-            . "via soap,  $message");*/
-        return new static("Aconteceu um erro enquanto estava tentando se comunicar "
-            . "via soap,  $message");
+		/*return new static("An error occurred while trying to communication "
+            . "via soap,  $message", $code);*/
+		return new static("Aconteceu um erro enquanto estava tentando se comunicar "
+            . "via soap,  $message", $code);
     }
 }
