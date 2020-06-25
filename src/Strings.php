@@ -249,4 +249,23 @@ class Strings
         }
         return $str;
     }
+
+    /**
+     * Format phone in brazilian format
+     * @param string $phone
+     * @return string
+     */
+    public static function format_fone($phone = ''){
+        $phoneOnlyNumber = preg_replace('/[^0-9]/', '', $phone);
+        $regex = strlen($phoneOnlyNumber) > 11 ? '/^([0-9]{2})([0-9]{2})([0-9]{4,5})([0-9]{4})$/' : '/^([0-9]{2})([0-9]{4,5})([0-9]{4})$/';
+        $matches = [];
+        preg_match($regex, $phoneOnlyNumber, $matches);
+        if ($matches) {
+            return strlen($phoneOnlyNumber) > 11 ?
+                '+'.$matches[1].' ('.$matches[2].') '.$matches[3].'-'.$matches[4] :
+                '('.$matches[1].') '.$matches[2].'-'.$matches[3];
+        }
+
+        return $phone; // return number without format
+    }
 }
